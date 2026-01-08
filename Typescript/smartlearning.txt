@@ -1,0 +1,123 @@
+// ABSTRACTION (INTERFACE)
+
+interface Trackable {
+  trackProgress(): void;
+}
+// ABSTRACT CLASS
+abstract class Course implements Trackable {
+
+  // ENCAPSULATION
+  private courseId: string;
+  private active: boolean;
+
+  constructor(courseId: string) {
+    this.courseId = courseId;
+    this.active = false;
+  }
+
+  public startCourse(): void {
+    this.active = true;
+    console.log(`${this.courseId} course started`);
+  }
+
+  public endCourse(): void {
+    this.active = false;
+    console.log(`${this.courseId} course ended`);
+  }
+
+  protected isActive(): boolean {
+    return this.active;
+  }
+
+  public getCourseId(): string {
+    return this.courseId;
+  }
+
+  // ABSTRACTION
+  abstract evaluate(): void;
+
+  // Interface method
+  abstract trackProgress(): void;
+}
+// INHERITANCE + POLYMORPHISM
+class VideoCourse extends Course {
+
+  constructor(courseId: string) {
+    super(courseId);
+  }
+
+  public trackProgress(): void {
+    if (this.isActive()) {
+      console.log("Tracking");
+    } else {
+      console.log("Video course not active");
+    }
+  }
+
+  public evaluate(): void {
+    console.log("Video course quiz evaluated");
+  }
+}
+// INHERITANCE + POLYMORPHISM
+class LiveClass extends Course {
+
+  constructor(courseId: string) {
+    super(courseId);
+  }
+
+  public trackProgress(): void {
+    if (this.isActive()) {
+      console.log("Tracking live attendance");
+    } else {
+      console.log("Live class not active");
+    }
+  }
+
+  public evaluate(): void {
+    console.log("class participation evaluated");
+  }
+}
+// INHERITANCE + POLYMORPHISM
+class Workshop extends Course {
+
+  constructor(courseId: string) {
+    super(courseId);
+  }
+
+  public trackProgress(): void {
+    if (this.isActive()) {
+      console.log("workshop completion");
+    } else {
+      console.log("Workshop not active");
+    }
+  }
+
+  public evaluate(): void {
+    console.log("assessment evaluated");
+  }
+}
+class LearningPlatform {
+
+  public manageCourse(course: Course): void {
+    course.startCourse();
+    course.trackProgress();
+    course.evaluate();
+    course.endCourse();
+  }
+}
+class SmartLearningApp {
+
+  public static main(): void {
+
+    const video: Course = new VideoCourse("VID-101");
+    const live: Course = new LiveClass("LIVE-202");
+    const workshop: Course = new Workshop("WORK-303");
+
+    const platform = new LearningPlatform();
+
+    platform.manageCourse(video);
+    platform.manageCourse(live);
+    platform.manageCourse(workshop);
+  }
+}
+SmartLearningApp.main();
